@@ -30,8 +30,9 @@ class MAZE_SOLVER():
                 else:
                     print(f'\t{self.maze[i][j]}', end='')
             print('\n')
-        print(f'Maze solver at ( {self.x}, {self.y} )')
-        print(f'Looking at ( {self.forward_x}, {self.forward_y} )')
+        print(f'\t\t\t    Posición actual: ( {self.x}, {self.y} )')
+        print(f'\t\t\t\tMirando a: ( {self.forward_x}, {self.forward_y} )')
+        print()
 
     # Verifica si no las coordenadas no se salen del laberinto
     def exists(self, x: int, y: int) -> bool:
@@ -133,7 +134,7 @@ class MAZE_SOLVER():
         for _ in range(n):
             print(f'\n\t\t=============== Iteration {_} ===============')
             self.show()
-            # ===================================================
+            # #################################################################
             #If the coordinate of the towards square from the maze is valid
             if self.exists(self.forward_x, self.forward_y):
                 #get the symbol of the square towards
@@ -145,14 +146,16 @@ class MAZE_SOLVER():
                     self.go_ahead()
                     #If the current location symbol is the goal
                     if self.maze[self.x][self.y] == 'M':
-                        print('Maze solved successfully!!!')
+                        print("\n\n\t\t==-==-==-==-==-== M E T A ==-==-==-==-==-==")
+                        self.show()
+                        print('LLEGASTE A LA METAAAAAA AAAA TE AMO DEEEYYYY')
                         exit(0)
                 else:
                     self.turnCC()
                 # =================================================== 
             else:
                 self.turnCC()
-             # ===================================================   
+             # ############################################################### 
         print("Goal not found!!!")
 
 
@@ -169,7 +172,7 @@ def find_goal(maze):
 ex1 = [[0,0, 0, 0, 0, 0, 0, 0, 0],
        [0, 1, 1, 0, 0, 1, 1, 0, 0],
        [0, 1, 0, 0, 0, 0, 1, 0, 0],
-       [0, 0, 0,'S', 'M', 0, 0, 0, 0],
+       [0, 0,'S',0, 0, 0, 0, 0,'M'],
        [0, 1, 0, 0, 0, 0, 1, 0, 0],
        [0, 1, 1,0, 0, 1, 1, 0, 0],
        [0, 0, 0, 0, 0, 0, 0, 0, 0]
