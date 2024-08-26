@@ -18,10 +18,13 @@ class MAZE_SOLVER():
 
     def show(self) -> None:
         """Método para imprimir el laberinto y la información del MAZE_SOLVER"""
+        os.system('cls' if os.name == 'nt' else 'clear')
         for i in range(self.rows):
             for j in range(self.cols):
                 if i == self.x and j == self.y:
                     print('\t[X]', end='')
+                elif self.maze[i][j] == 'V':  # Marca el rastro del camino
+                    print('\t.', end='')
                 else:
                     print(f'\t{self.maze[i][j]}', end='')
             print('\n')
@@ -45,24 +48,31 @@ class MAZE_SOLVER():
             self.orientation = 'E'
 
     def solve_bfs(self) -> None:
+        i = 0
         """Resolver el laberinto utilizando BFS"""
         directions = [(1, 0), (-1, 0), (0, 1), (0, -1)]  # Movimientos posibles (S, N, E, W)
         self.queue.put((self.x, self.y))  # Inicializar la cola con la posición de inicio
         self.visited.add((self.x, self.y))
 
         while not self.queue.empty():
+            i += 1
+            print('\n\t\t=============== Iteration {} ==============='.format(i))
             x, y = self.queue.get()
             self.x, self.y = x, y  # Actualizar posición actual
-            self.show()
-            #time.sleep(0.4)
-            #os.system('cls')
 
             # Verificar si hemos llegado a la meta
             if self.maze[x][y] == 'M':
                 print("\n\n\t\t==-==-==-==-==-== M E T A ==-==-==-==-==-==")
                 self.show()
-                print('¡LLEGASTE A LA META!')
+                print('\t\t Llegaste a la meta')
                 return
+
+            # Dejar rastro del camino
+            if self.maze[x][y] != 'S':  # No sobrescribir el inicio
+                self.maze[x][y] = 'V'
+
+            self.show()
+            time.sleep(0.4)
 
             # Explorar vecinos en direcciones horizontales y verticales
             for direction in directions:
@@ -85,14 +95,14 @@ def find_start(maze):
 
 ex1 = [[0, 0, 0, 0, 0, 0, 0, 0, 0],
        [0, 1, 1, 0, 0, 1, 1, 0, 0],
-       [0, 1, 0, 'M', 0, 0, 1, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0, 0],
-       ['S', 1, 0, 0, 0, 0, 1, 0, 0],
+       [0, 1, 0, 0, 0, 0, 1, 0, 0],
+       [0, 0, 0, 0, 0, 'S', 0, 0, 0],
+       [0, 1, 0, 0, 0, 0, 1, 0, 0],
        [0, 1, 1, 0, 0, 1, 1, 0, 0],
-       [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+       [0, 0, 0, 0, 0, "M", 0, 0, 0]]
 
 if __name__ == "__main__":
-    os.system('cls')
+    os.system('cls' if os.name == 'nt' else 'clear')
     [i, j] = find_start(ex1)
     mz = MAZE_SOLVER(ex1, i+1, j, i, j)
     mz.solve_bfs()
